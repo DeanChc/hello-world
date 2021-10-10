@@ -1,2 +1,2 @@
-# hellow-world
+# hello-world
 Dean's world
