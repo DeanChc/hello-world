@@ -1,0 +1,451 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct _node{
+	int number,date;
+	char name[50],author[50],singer[50],style[50];
+	struct _node*next;
+}Node;
+typedef struct _list{
+	Node*head;
+	Node*tail;
+}List;
+
+void start(List*plist);
+void joke(List*plist);
+void menu(List*plist);
+void update(List*plist);
+void search(List*plist);
+void read(List*plist,Node*p);
+void browse(List*plist);
+void input(List*plist);
+void delete(List*plist);
+void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]);
+void end(List*plist);
+void print(Node*p);
+void find1(List*plist);
+void find2(List*plist);
+void find3(List*plist);
+void find4(List*plist);
+void find5(List*plist);
+void find6(List*plist);
+void statistic(List*plist);
+int count1(List*plist);
+int count2(List*plist);
+int count3(List*plist);
+int count4(List*plist);
+
+int main()
+{
+	List list;
+	list.head=list.tail=NULL;
+	printf("\nWelcom To Dean's Music Notes\n");
+	start(&list);
+	end(&list);
+return 0;
+}
+
+void update(List*plist){
+	int t;char u[50];
+	Node*p,*q;
+	for(p=plist->head;p;p=p->next){
+		for(q=p->next;q;q=q->next){
+			if(q->date<p->date){
+				t=q->date;q->date=p->date;p->date=t;
+				strcpy(u,q->name);strcpy(q->name,p->name);strcpy(p->name,u);
+				strcpy(u,q->author);strcpy(q->author,p->author);strcpy(p->author,u);
+				strcpy(u,q->singer);strcpy(q->singer,p->singer);strcpy(p->singer,u);
+				strcpy(u,q->style);strcpy(q->style,p->style);strcpy(p->style,u);
+			}
+		}
+	}
+	int i=1;
+	for(p=plist->head;p;p=p->next){
+		p->number=i++;
+	}
+	menu(plist);
+}
+
+void read(List*plist,Node*p){
+	int c;
+	if(p!=NULL){
+	print(p);
+	do{printf("\n1.Back\n2.Next\n3.Menu\nPlease choose a number:");
+	scanf("%d",&c);
+	if(c==1){
+		if(p->number <= 1)menu(plist);
+		else{int i=(p->number-1);
+			for(p=plist->head;p;p=p->next){
+				if(p->number==i)break;
+			}
+			read(plist,p);}
+	}
+	else if(c==2){if(p->next){p=p->next;read(plist,p);}
+		else {printf("\nNULL\n");menu(plist);}}
+	else if(c==3){
+		menu(plist);
+	}
+	else{printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\n");}
+	}while(c!=1&&c!=2&&c!=3);
+	}
+	else {printf("\nNULL\n");menu(plist);}
+}
+
+void browse(List*plist){
+	if(plist->head){
+	Node*p;
+	for(p=plist->head;p;p=p->next){
+		printf("%s",p->name);
+		printf("\n");
+	   }menu(plist);
+	}
+	else {printf("\nNULL\n");menu(plist);}
+}
+
+void delete(List*plist){
+	int c,d,n=1;
+	do{printf("\nPlease enter the number:");
+		Node*q,*p;
+	        scanf("%d",&d);
+	       for(q=NULL,p=plist->head;p;q=p,p=p->next){
+	        	if(p->number==d){
+		        	if(q){
+		  		q->next=p->next;
+		        	}else{
+			 	plist->head=p->next;
+			        }
+			        free(p);
+			        break;
+		         }	
+	       }
+	       printf("\n1.continue\n2.back\nPlease make a choice:");
+	       scanf("%d",&c);
+	       if(c==1) delete(plist);
+	       else if(c==2) update(plist);
+	       else printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");
+	}while(c!=1&&c!=2);
+}
+
+
+void search(List*plist){
+	int c;
+	printf("1.Number\n2.Date\n3.Name\n4.Author\n5.Singer\n6.Style\n7.Back\nPlease choose a way to search(eg:1):");
+	scanf("%d",&c);
+	switch(c){
+		case 1:find1(plist);break;
+		case 2:find2(plist);break;
+		case 3:find3(plist);break;
+		case 4:find4(plist);break;
+		case 5:find5(plist);break;
+		case 6:find6(plist);break;
+		case 7:menu(plist);break;
+		default:printf("\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");search(plist);
+	   }
+}
+
+void find1(List*plist){
+	int f,j=0,c;
+	Node*p;
+	scanf("%d",&f);
+	for(p=plist->head;p;p=p->next){
+		if(p->number==f){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find1(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+     }
+}
+void find2(List*plist){
+	int f,j=0,c;
+	Node*p;
+	scanf("%d",&f);
+	for(p=plist->head;p;p=p->next){
+		if(p->date==f){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find2(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+     }
+}
+void find3(List*plist){
+	int j=0,c;
+	char f[50];
+	Node*p;
+	scanf("%s",f);
+	for(p=plist->head;p;p=p->next){
+		if(!strcmp(p->name,f)){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find3(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+     }
+}
+void find4(List*plist){
+	int j=0,c;
+	char f[50];
+	Node*p;
+	scanf("%s",f);
+	for(p=plist->head;p;p=p->next){
+		if(!strcmp(p->author,f)){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again  2.Back  3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find4(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+     }
+}
+void find5(List*plist){
+	int j=0,c;
+	char f[50];
+	Node*p;
+	scanf("%s",f);
+	for(p=plist->head;p;p=p->next){
+		if(!strcmp(p->singer,f)){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find5(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+     }
+}
+void find6(List*plist){
+	int j=0,c;
+	char f[50];
+	Node*p;
+	scanf("%s",f);
+	for(p=plist->head;p;p=p->next){
+		if(!strcmp(p->style,f)){
+			print(p);
+			j=1;
+		}
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	do{scanf("%d",&c);
+	if(c==1)find6(plist);
+	else if(c==2)search(plist);
+	else if(c==3)menu(plist);
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	}while(c!=1&&c!=2&&c!=3);
+    }
+}
+
+void print(Node*p){
+	printf("\nNumber:%d\n",p->number);
+	printf("Date:%d\n",p->date);
+	printf("Name:%s\n",p->name);
+	printf("Author:%s\n",p->author);
+	printf("Singer:%s\n",p->singer);
+	printf("Style:%s\n\n",p->style);
+}
+	
+void input(List*plist){
+	printf("Please tell me the song's\n");
+	int dat;
+	printf("Date:");
+	scanf("%d",&dat);
+	char nam[50],aut[50],sin[50],sty[20];
+	int c;
+	printf("Name:");
+	scanf("%s",nam);
+	printf("Author:");
+	scanf("%s",aut);
+	printf("Singer:");
+	scanf("%s",sin);
+	printf("Style:");
+	scanf("%s",sty);
+	add(plist,dat,nam,aut,sin,sty);
+	do{printf("\n1.cotinue\n2.back\nPlease choose your wish:");
+	scanf("%d",&c);
+	if(c==1) input(plist);
+	else if(c==2) update(plist);
+	else {
+		printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\n");
+
+	  }
+	}while(c!=1&&c!=2);
+	}
+
+void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]){
+	Node*p=(Node*)malloc(sizeof(Node));
+	p->date=dat;
+	strcpy(p->name,nam);
+	strcpy(p->author,aut);
+	strcpy(p->singer,sin);
+	strcpy(p->style,sty);
+	p->next=NULL;
+	plist->tail=plist->head;
+	if(plist->tail){
+		while(plist->tail->next){
+			plist->tail=plist->tail->next;
+		}
+		plist->tail->next=p;
+	}else{
+		plist->head=p;
+	}
+	printf("\nSuccessfully!\n");
+}
+
+void statistic(List*plist){
+	if(plist->head){
+	int a1,a2,a3,a4;
+	a1=count1(plist);
+	a2=count2(plist);
+	a3=count3(plist);
+	a4=count4(plist);
+	printf("Welcom!\n1.Songs:     %d\n2.Authors:   %d\n3.Singers:   %d\n4.Styles:    %d\n",a1,a2,a3,a4);
+	menu(plist);
+	}
+	else{
+		printf("\nNULL\n");
+		menu(plist);
+	}
+}
+
+int count1(List*plist){
+	int i=0;
+	Node*p;
+	for(p=plist->head;p;p=p->next){
+		i++;
+	}
+	return i;
+}
+int count2(List*plist){
+	int i=1;
+	Node*p,*q;
+	q=plist->head;
+	   for(p=plist->head->next;p;p=p->next){
+		if(strcmp(p->author,q->author)!=0)
+				i++;
+	   } 
+	return i;
+}
+int count3(List*plist){
+	int i=1;
+	Node*p,*q;
+	q=plist->head;
+	for(p=plist->head->next;p;p=p->next){
+	 if(strcmp(p->singer,q->singer)!=0)
+				i++;
+		}
+	return i;
+}
+int count4(List*plist){
+	int i=1;
+	Node*p,*q;
+	q=plist->head;
+	for(p=plist->head->next;p;p=p->next){
+	   if(strcmp(p->style,q->style)!=0)
+				i++;
+	}
+	return i;
+}
+
+void joke(List*plist)
+{
+	printf("\n\033[47;34;1;4;5mAll living things equality\033[0m\n");
+        start(plist);
+}
+
+void start(List*plist)
+{
+	printf("\nYou could choose a number of \"Menu\" , \"Leave\" and \"Root\"\n1.Menu\n2.Leave\n3.Root\nPlease choose your number:");
+	int c;
+	scanf("%d",&c);
+	do{
+		if(c==1)
+		{
+			menu(plist);
+			break;
+		}
+		else if(c==2)
+			break;
+		else if(c==3)
+		{
+			joke(plist);
+			break;
+		}
+		else
+		{
+			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
+			printf("Please choose your number again:");
+				scanf("%d",&c);
+
+		}
+	}while(c!=1&&c!=2&&c!=3);
+}
+
+void end(List*plist)
+{
+	Node*p,*q;
+	for(p=plist->head;p;p=q)
+	{
+		q=p->next;
+		free(p);
+	}
+}
+
+void menu(List*plist)
+{
+	printf("\n\
+		\033[32;1;5m***************************\n\
+		**         MENU          **\n\
+		**        1.Update       **\n\
+		**        2.Search       **\n\
+		**        3.Read         **\n\
+		**        4.Browse       **\n\
+		**        5.Input        **\n\
+		**        6.Delete       **\n\
+		**        7.statistic    **\n\
+		**        8.Back         **\n\
+		***************************\n\033[0m");
+	printf("\nPlease tell me the number which you want:");
+	int c;
+	scanf("%d",&c);
+	while(1)
+	{
+		switch(c)
+	        {
+		  case 1:update(plist);break;
+		  case 2:search(plist);break;
+		  case 3:read(plist,plist->head);break;
+		  case 4:browse(plist);break;
+		  case 5:input(plist);break;
+		  case 6:delete(plist);break;
+		  case 7:statistic(plist);break;
+		  case 8:start(plist);break;
+		  default:{
+				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,plese try again:\033[0m");
+			        scanf("%d",&c);
+				break;
+			}
+	        }
+	}
+}
