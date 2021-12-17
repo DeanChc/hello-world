@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<setjmp.h>
+
+jmp_buf jmp;
 
 typedef struct _node{
 	int number,date;
@@ -41,6 +44,7 @@ int main()
 	List list;
 	list.head=list.tail=NULL;
 	printf("\nWelcom To Dean's Music Notes\n");
+	if(setjmp(jmp)==0)
 	start(&list);
 	end(&list);
 return 0;
@@ -72,6 +76,7 @@ void read(List*plist,Node*p){
 	if(p!=NULL){
 	print(p);
 	do{printf("\n1.Back\n2.Next\n3.Menu\nPlease choose a number:");
+		setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1){
 		if(p->number <= 1)menu(plist);
@@ -96,17 +101,36 @@ void browse(List*plist){
 	if(plist->head){
 	Node*p;
 	for(p=plist->head;p;p=p->next){
-		printf("%s",p->name);
+		printf("%d  %s",p->number,p->name);
 		printf("\n");
-	   }menu(plist);
+	   }
+	int c;
+	printf("\n1.Back\n2.Again\nPlease make a choice:");
+	scanf("%d",&c);
+	      do{
+		if(c==1)
+		{
+			menu(plist);
+		}
+		else if(c==2)
+			browse(plist);
+		else
+		{
+			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
+			printf("Please choose your number again:");
+			setbuf(stdin,NULL);
+				scanf("%d",&c);
+
+		}
+	}while(c!=1&&c!=2);
 	}
 	else {printf("\nNULL\n");menu(plist);}
 }
 
 void delete(List*plist){
-	int c,d,n=1;
-	do{printf("\nPlease enter the number:");
-		Node*q,*p;
+	int c,d;
+	Node*q,*p;
+	printf("\nPlease enter the number(if you have no idea ,please enter '0' to give up):");
 	        scanf("%d",&d);
 	       for(q=NULL,p=plist->head;p;q=p,p=p->next){
 	        	if(p->number==d){
@@ -119,7 +143,8 @@ void delete(List*plist){
 			        break;
 		         }	
 	       }
-	       printf("\n1.continue\n2.back\nPlease make a choice:");
+	       do{printf("\n1.continue\n2.back\nPlease make a choice:");
+		       setbuf(stdin,NULL);
 	       scanf("%d",&c);
 	       if(c==1) delete(plist);
 	       else if(c==2) update(plist);
@@ -154,7 +179,8 @@ void find1(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find1(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -172,7 +198,8 @@ void find2(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find2(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -191,7 +218,8 @@ void find3(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find3(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -210,7 +238,8 @@ void find4(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again  2.Back  3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find4(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -229,7 +258,8 @@ void find5(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find5(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -248,7 +278,8 @@ void find6(List*plist){
 			j=1;
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{scanf("%d",&c);
+	do{setbuf(stdin,NULL);
+	scanf("%d",&c);
 	if(c==1)find6(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
@@ -283,6 +314,7 @@ void input(List*plist){
 	scanf("%s",sty);
 	add(plist,dat,nam,aut,sin,sty);
 	do{printf("\n1.cotinue\n2.back\nPlease choose your wish:");
+		setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1) input(plist);
 	else if(c==2) update(plist);
@@ -315,13 +347,26 @@ void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]){
 
 void statistic(List*plist){
 	if(plist->head){
-	int a1,a2,a3,a4;
+	int a1,a2,a3,a4,c;
 	a1=count1(plist);
 	a2=count2(plist);
 	a3=count3(plist);
 	a4=count4(plist);
 	printf("Welcom!\n1.Songs:     %d\n2.Authors:   %d\n3.Singers:   %d\n4.Styles:    %d\n",a1,a2,a3,a4);
-	menu(plist);
+	 do{printf("\n1.Back\n2.Again\nPlease make a choice:");
+		 setbuf(stdin,NULL);
+	        scanf("%d",&c);
+		if(c==1)
+		{
+			menu(plist);
+		}
+		else if(c==2)
+			statistic(plist);
+		else
+		{
+			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
+		}
+	}while(c!=1&&c!=2);
 	}
 	else{
 		printf("\nNULL\n");
@@ -383,19 +428,20 @@ void start(List*plist)
 		if(c==1)
 		{
 			menu(plist);
-			break;
 		}
 		else if(c==2)
-			break;
+		{
+			longjmp(jmp,2);
+		}
 		else if(c==3)
 		{
 			joke(plist);
-			break;
 		}
 		else
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
+			setbuf(stdin,NULL);
 				scanf("%d",&c);
 
 		}
@@ -442,7 +488,8 @@ void menu(List*plist)
 		  case 7:statistic(plist);break;
 		  case 8:start(plist);break;
 		  default:{
-				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,plese try again:\033[0m");
+				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,please try again:\033[0m");
+				setbuf(stdin,NULL);
 			        scanf("%d",&c);
 				break;
 			}
