@@ -51,7 +51,8 @@ return 0;
 }
 
 void update(List*plist){
-	int t;char u[50];
+	int t,j,i=1;
+	char u[50];
 	Node*p,*q;
 	for(p=plist->head;p;p=p->next){
 		for(q=p->next;q;q=q->next){
@@ -64,7 +65,6 @@ void update(List*plist){
 			}
 		}
 	}
-	int i=1;
 	for(p=plist->head;p;p=p->next){
 		p->number=i++;
 	}
@@ -76,7 +76,7 @@ void read(List*plist,Node*p){
 	if(p!=NULL){
 	print(p);
 	do{printf("\n1.Back\n2.Next\n3.Menu\nPlease choose a number:");
-		setbuf(stdin,NULL);
+		fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1){
 		if(p->number <= 1)menu(plist);
@@ -118,7 +118,7 @@ void browse(List*plist){
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			setbuf(stdin,NULL);
+			fflush(stdin);//Linux:setbuf(stdin,NULL);
 				scanf("%d",&c);
 
 		}
@@ -144,7 +144,7 @@ void delete(List*plist){
 		         }	
 	       }
 	       do{printf("\n1.continue\n2.back\nPlease make a choice:");
-		       setbuf(stdin,NULL);
+		       fflush(stdin);//Linux:setbuf(stdin,NULL);
 	       scanf("%d",&c);
 	       if(c==1) delete(plist);
 	       else if(c==2) update(plist);
@@ -155,7 +155,7 @@ void delete(List*plist){
 
 void search(List*plist){
 	int c;
-	printf("1.Number\n2.Date\n3.Name\n4.Author\n5.Singer\n6.Style\n7.Back\nPlease choose a way to search(eg:1):");
+	printf("\n1.Number\n2.Date\n3.Name\n4.Author\n5.Singer\n6.Style\n7.Back\nPlease choose a way to search(eg:1):");
 	scanf("%d",&c);
 	switch(c){
 		case 1:find1(plist);break;
@@ -178,13 +178,14 @@ void find1(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+		fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find1(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
      }
 }
@@ -197,13 +198,14 @@ void find2(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+		fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find2(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
      }
 }
@@ -217,13 +219,14 @@ void find3(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find3(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
      }
 }
@@ -237,13 +240,14 @@ void find4(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again  2.Back  3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find4(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
      }
 }
@@ -257,13 +261,14 @@ void find5(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find5(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
      }
 }
@@ -277,13 +282,14 @@ void find6(List*plist){
 			print(p);
 			j=1;
 		}
-	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m\nDo you want to try again?\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	do{setbuf(stdin,NULL);
+	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
+	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
+	fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1)find6(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
-	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");}
+	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
 	}while(c!=1&&c!=2&&c!=3);
     }
 }
@@ -300,27 +306,26 @@ void print(Node*p){
 void input(List*plist){
 	printf("Please tell me the song's\n");
 	int dat;
-	printf("Date:");
+	printf("Date(eg:20210202):");
 	scanf("%d",&dat);
 	char nam[50],aut[50],sin[50],sty[20];
 	int c;
-	printf("Name:");
+	printf("Name(eg:Love):");
 	scanf("%s",nam);
-	printf("Author:");
+	printf("Author(Jack):");
 	scanf("%s",aut);
-	printf("Singer:");
+	printf("Singer(Mary):");
 	scanf("%s",sin);
-	printf("Style:");
+	printf("Style(Relax):");
 	scanf("%s",sty);
 	add(plist,dat,nam,aut,sin,sty);
 	do{printf("\n1.cotinue\n2.back\nPlease choose your wish:");
-		setbuf(stdin,NULL);
+		fflush(stdin);//Linux:setbuf(stdin,NULL);
 	scanf("%d",&c);
 	if(c==1) input(plist);
 	else if(c==2) update(plist);
 	else {
 		printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\n");
-
 	  }
 	}while(c!=1&&c!=2);
 	}
@@ -342,7 +347,6 @@ void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]){
 	}else{
 		plist->head=p;
 	}
-	printf("\nSuccessfully!\n");
 }
 
 void statistic(List*plist){
@@ -354,7 +358,7 @@ void statistic(List*plist){
 	a4=count4(plist);
 	printf("Welcom!\n1.Songs:     %d\n2.Authors:   %d\n3.Singers:   %d\n4.Styles:    %d\n",a1,a2,a3,a4);
 	 do{printf("\n1.Back\n2.Again\nPlease make a choice:");
-		 setbuf(stdin,NULL);
+		 fflush(stdin);//Linux:setbuf(stdin,NULL);
 	        scanf("%d",&c);
 		if(c==1)
 		{
@@ -441,7 +445,7 @@ void start(List*plist)
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			setbuf(stdin,NULL);
+			fflush(stdin);//Linux:setbuf(stdin,NULL);
 				scanf("%d",&c);
 
 		}
@@ -489,7 +493,7 @@ void menu(List*plist)
 		  case 8:start(plist);break;
 		  default:{
 				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,please try again:\033[0m");
-				setbuf(stdin,NULL);
+				fflush(stdin);//Linux:setbuf(stdin,NULL);
 			        scanf("%d",&c);
 				break;
 			}
