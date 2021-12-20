@@ -76,7 +76,7 @@ void read(List*plist,Node*p){
 	if(p!=NULL){
 	print(p);
 	do{printf("\n1.Back\n2.Next\n3.Menu\nPlease choose a number:");
-		fflush(stdin);//Linux:setbuf(stdin,NULL);
+		fflush(stdin);
 	scanf("%d",&c);
 	if(c==1){
 		if(p->number <= 1)menu(plist);
@@ -118,7 +118,7 @@ void browse(List*plist){
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			fflush(stdin);//Linux:setbuf(stdin,NULL);
+			fflush(stdin);
 				scanf("%d",&c);
 
 		}
@@ -132,6 +132,7 @@ void delete(List*plist){
 	Node*q,*p;
 	printf("\nPlease enter the number(if you have no idea ,please enter '0' to give up):");
 	        scanf("%d",&d);
+		if(d!=0)
 	       for(q=NULL,p=plist->head;p;q=p,p=p->next){
 	        	if(p->number==d){
 		        	if(q){
@@ -141,10 +142,13 @@ void delete(List*plist){
 			        }
 			        free(p);
 			        break;
-		         }	
+		         }
+				 else{
+					 printf("\033[41;33;1;5mSorry I don't find it.\n");
+				 }	
 	       }
 	       do{printf("\n1.continue\n2.back\nPlease make a choice:");
-		       fflush(stdin);//Linux:setbuf(stdin,NULL);
+		       fflush(stdin);
 	       scanf("%d",&c);
 	       if(c==1) delete(plist);
 	       else if(c==2) update(plist);
@@ -157,6 +161,7 @@ void search(List*plist){
 	int c;
 	printf("\n1.Number\n2.Date\n3.Name\n4.Author\n5.Singer\n6.Style\n7.Back\nPlease choose a way to search(eg:1):");
 	scanf("%d",&c);
+	getchar();
 	switch(c){
 		case 1:find1(plist);break;
 		case 2:find2(plist);break;
@@ -170,6 +175,7 @@ void search(List*plist){
 }
 
 void find1(List*plist){
+	printf("Please enter:");
 	int f,j=0,c;
 	Node*p;
 	scanf("%d",&f);
@@ -180,7 +186,7 @@ void find1(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-		fflush(stdin);//Linux:setbuf(stdin,NULL);
+		fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find1(plist);
 	else if(c==2)search(plist);
@@ -190,6 +196,7 @@ void find1(List*plist){
      }
 }
 void find2(List*plist){
+	printf("Please enter:");
 	int f,j=0,c;
 	Node*p;
 	scanf("%d",&f);
@@ -200,7 +207,7 @@ void find2(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-		fflush(stdin);//Linux:setbuf(stdin,NULL);
+		fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find2(plist);
 	else if(c==2)search(plist);
@@ -210,10 +217,11 @@ void find2(List*plist){
      }
 }
 void find3(List*plist){
+	printf("Please enter:");
 	int j=0,c;
 	char f[50];
 	Node*p;
-	scanf("%s",f);
+	gets(f);
 	for(p=plist->head;p;p=p->next){
 		if(!strcmp(p->name,f)){
 			print(p);
@@ -221,7 +229,7 @@ void find3(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);//Linux:setbuf(stdin,NULL);
+	fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find3(plist);
 	else if(c==2)search(plist);
@@ -231,10 +239,11 @@ void find3(List*plist){
      }
 }
 void find4(List*plist){
+	printf("Please enter:");
 	int j=0,c;
 	char f[50];
 	Node*p;
-	scanf("%s",f);
+	gets(f);
 	for(p=plist->head;p;p=p->next){
 		if(!strcmp(p->author,f)){
 			print(p);
@@ -242,7 +251,7 @@ void find4(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);//Linux:setbuf(stdin,NULL);
+	fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find4(plist);
 	else if(c==2)search(plist);
@@ -252,10 +261,11 @@ void find4(List*plist){
      }
 }
 void find5(List*plist){
+	printf("Please enter:");
 	int j=0,c;
 	char f[50];
 	Node*p;
-	scanf("%s",f);
+	gets(f);
 	for(p=plist->head;p;p=p->next){
 		if(!strcmp(p->singer,f)){
 			print(p);
@@ -263,7 +273,7 @@ void find5(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);//Linux:setbuf(stdin,NULL);
+	fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find5(plist);
 	else if(c==2)search(plist);
@@ -273,10 +283,11 @@ void find5(List*plist){
      }
 }
 void find6(List*plist){
+	printf("Please enter:");
 	int j=0,c;
 	char f[50];
 	Node*p;
-	scanf("%s",f);
+	gets(f);
 	for(p=plist->head;p;p=p->next){
 		if(!strcmp(p->style,f)){
 			print(p);
@@ -284,7 +295,7 @@ void find6(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);//Linux:setbuf(stdin,NULL);
+	fflush(stdin);
 	scanf("%d",&c);
 	if(c==1)find6(plist);
 	else if(c==2)search(plist);
@@ -308,19 +319,20 @@ void input(List*plist){
 	int dat;
 	printf("Date(eg:20210202):");
 	scanf("%d",&dat);
+	getchar();
 	char nam[50],aut[50],sin[50],sty[20];
 	int c;
 	printf("Name(eg:Love):");
-	scanf("%s",nam);
+	gets(nam);
 	printf("Author(Jack):");
-	scanf("%s",aut);
+	gets(aut);
 	printf("Singer(Mary):");
-	scanf("%s",sin);
+	gets(sin);
 	printf("Style(Relax):");
-	scanf("%s",sty);
+	gets(sty);
 	add(plist,dat,nam,aut,sin,sty);
 	do{printf("\n1.cotinue\n2.back\nPlease choose your wish:");
-		fflush(stdin);//Linux:setbuf(stdin,NULL);
+		fflush(stdin);
 	scanf("%d",&c);
 	if(c==1) input(plist);
 	else if(c==2) update(plist);
@@ -358,7 +370,7 @@ void statistic(List*plist){
 	a4=count4(plist);
 	printf("Welcom!\n1.Songs:     %d\n2.Authors:   %d\n3.Singers:   %d\n4.Styles:    %d\n",a1,a2,a3,a4);
 	 do{printf("\n1.Back\n2.Again\nPlease make a choice:");
-		 fflush(stdin);//Linux:setbuf(stdin,NULL);
+		 fflush(stdin);
 	        scanf("%d",&c);
 		if(c==1)
 		{
@@ -445,7 +457,7 @@ void start(List*plist)
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			fflush(stdin);//Linux:setbuf(stdin,NULL);
+			fflush(stdin);
 				scanf("%d",&c);
 
 		}
@@ -493,7 +505,7 @@ void menu(List*plist)
 		  case 8:start(plist);break;
 		  default:{
 				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,please try again:\033[0m");
-				fflush(stdin);//Linux:setbuf(stdin,NULL);
+				fflush(stdin);
 			        scanf("%d",&c);
 				break;
 			}
