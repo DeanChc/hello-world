@@ -3,16 +3,17 @@
 #include<string.h>
 #include<setjmp.h>
 
-jmp_buf jmp;
+jmp_buf jmp;//记录回复的位置变量
 
+//定义链表结构
 typedef struct _node{
-	int number,date;
+	int number,date;//结点数据域
 	char name[50],author[50],singer[50],style[50];
-	struct _node*next;
-}Node;
+	struct _node*next;//指向后继结点
+}Node;//链表结点
 typedef struct _list{
-	Node*head;
-	Node*tail;
+	Node*head;//链表头
+	Node*tail;//链表尾
 }List;
 
 void start(List*plist);
@@ -39,21 +40,24 @@ int count2(List*plist);
 int count3(List*plist);
 int count4(List*plist);
 
+//主函数
 int main()
 {
 	List list;
-	list.head=list.tail=NULL;
+	list.head=list.tail=NULL;//链表初始化
 	printf("\nWelcom To Dean's Music Notes\n");
-	if(setjmp(jmp)==0)
+	if(setjmp(jmp)==0)//保存当前堆栈环境    setjmp(jmp)直接调用值为0，判定为真；通过longjmp(jmp,1)跳转时返回值为1，判断为假
 	start(&list);
 	end(&list);
 return 0;
 }
 
+//更新模块
 void update(List*plist){
 	int t,j,i=1;
 	char u[50];
 	Node*p,*q;
+	//选择排序算法
 	for(p=plist->head;p;p=p->next){
 		for(q=p->next;q;q=q->next){
 			if(q->date<p->date){
@@ -71,12 +75,13 @@ void update(List*plist){
 	menu(plist);
 }
 
+//阅读模块
 void read(List*plist,Node*p){
 	int c;
 	if(p!=NULL){
 	print(p);
 	do{printf("\n1.Back\n2.Next\n3.Menu\nPlease choose a number:");
-		fflush(stdin);
+		fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1){
 		if(p->number <= 1)menu(plist);
@@ -92,11 +97,12 @@ void read(List*plist,Node*p){
 		menu(plist);
 	}
 	else{printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\n");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//用户不规范输入时进行报错补救
 	}
 	else {printf("\nNULL\n");menu(plist);}
 }
 
+//浏览模块
 void browse(List*plist){
 	if(plist->head){
 	Node*p;
@@ -118,15 +124,16 @@ void browse(List*plist){
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			fflush(stdin);
+			fflush(stdin);//清楚缓冲区
 				scanf("%d",&c);
 
 		}
-	}while(c!=1&&c!=2);
+	}while(c!=1&&c!=2);//用户不规范输入时报错补救
 	}
 	else {printf("\nNULL\n");menu(plist);}
 }
 
+//删除模块
 void delete(List*plist){
 	int c,d;
 	Node*q,*p;
@@ -140,7 +147,7 @@ void delete(List*plist){
 		        	}else{
 			 	plist->head=p->next;
 			        }
-			        free(p);
+			        free(p);//释放指针
 			        break;
 		         }
 				 else{
@@ -148,20 +155,20 @@ void delete(List*plist){
 				 }	
 	       }
 	       do{printf("\n1.continue\n2.back\nPlease make a choice:");
-		       fflush(stdin);
+		       fflush(stdin);//清除缓冲区
 	       scanf("%d",&c);
 	       if(c==1) delete(plist);
 	       else if(c==2) update(plist);
 	       else printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");
-	}while(c!=1&&c!=2);
+	}while(c!=1&&c!=2);//不规范输入报错补救
 }
 
-
+//查询模块
 void search(List*plist){
 	int c;
 	printf("\n1.Number\n2.Date\n3.Name\n4.Author\n5.Singer\n6.Style\n7.Back\nPlease choose a way to search(eg:1):");
 	scanf("%d",&c);
-	getchar();
+	getchar();//消除缓冲区残留
 	switch(c){
 		case 1:find1(plist);break;
 		case 2:find2(plist);break;
@@ -170,10 +177,9 @@ void search(List*plist){
 		case 5:find5(plist);break;
 		case 6:find6(plist);break;
 		case 7:menu(plist);break;
-		default:printf("\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");search(plist);
+		default:printf("\033[41;33;1;5mSorry,I don't know.\033[0m\nPlease try again:");search(plist);//不规范输入报错补救
 	   }
 }
-
 void find1(List*plist){
 	printf("Please enter:");
 	int f,j=0,c;
@@ -186,13 +192,13 @@ void find1(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-		fflush(stdin);
+		fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find1(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
      }
 }
 void find2(List*plist){
@@ -207,13 +213,13 @@ void find2(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-		fflush(stdin);
+		fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find2(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
      }
 }
 void find3(List*plist){
@@ -229,13 +235,13 @@ void find3(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);
+	fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find3(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
      }
 }
 void find4(List*plist){
@@ -251,13 +257,13 @@ void find4(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);
+	fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find4(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
      }
 }
 void find5(List*plist){
@@ -273,14 +279,14 @@ void find5(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);
+	fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find5(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
-     }
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
+    }
 }
 void find6(List*plist){
 	printf("Please enter:");
@@ -295,16 +301,17 @@ void find6(List*plist){
 		}
 	}if(j==0){printf("\n\033[41;33;1;5mSorry,I can't find it.\033[0m");
 	do{printf("\n1.Again\n2.Back\n3.Menu\nPlease give me your answer(eg:1):");
-	fflush(stdin);
+	fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1)find6(plist);
 	else if(c==2)search(plist);
 	else if(c==3)menu(plist);
 	else {printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m");}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
     }
 }
 
+//输出模块
 void print(Node*p){
 	printf("\nNumber:%d\n",p->number);
 	printf("Date:%d\n",p->date);
@@ -313,13 +320,15 @@ void print(Node*p){
 	printf("Singer:%s\n",p->singer);
 	printf("Style:%s\n\n",p->style);
 }
-	
+
+
+//输入模块
 void input(List*plist){
 	printf("Please tell me the song's\n");
 	int dat;
 	printf("Date(eg:20210202):");
 	scanf("%d",&dat);
-	getchar();
+	getchar();//清除缓冲区残留
 	char nam[50],aut[50],sin[50],sty[20];
 	int c;
 	printf("Name(eg:Love):");
@@ -332,16 +341,15 @@ void input(List*plist){
 	gets(sty);
 	add(plist,dat,nam,aut,sin,sty);
 	do{printf("\n1.cotinue\n2.back\nPlease choose your wish:");
-		fflush(stdin);
+		fflush(stdin);//清除缓冲区
 	scanf("%d",&c);
 	if(c==1) input(plist);
 	else if(c==2) update(plist);
 	else {
 		printf("\n\033[41;33;1;5mSorry,I don't know.\033[0m\n");
 	  }
-	}while(c!=1&&c!=2);
-	}
-
+	}while(c!=1&&c!=2);//不规范输入报错补救
+}
 void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]){
 	Node*p=(Node*)malloc(sizeof(Node));
 	p->date=dat;
@@ -361,6 +369,7 @@ void add(List*plist,int dat,char nam[],char aut[],char sin[],char sty[]){
 	}
 }
 
+//统计模块
 void statistic(List*plist){
 	if(plist->head){
 	int a1,a2,a3,a4,c;
@@ -370,7 +379,7 @@ void statistic(List*plist){
 	a4=count4(plist);
 	printf("Welcom!\n1.Songs:     %d\n2.Authors:   %d\n3.Singers:   %d\n4.Styles:    %d\n",a1,a2,a3,a4);
 	 do{printf("\n1.Back\n2.Again\nPlease make a choice:");
-		 fflush(stdin);
+		 fflush(stdin);//清除缓冲区
 	        scanf("%d",&c);
 		if(c==1)
 		{
@@ -382,14 +391,13 @@ void statistic(List*plist){
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 		}
-	}while(c!=1&&c!=2);
+	}while(c!=1&&c!=2);//不规范输入报错补救
 	}
 	else{
 		printf("\nNULL\n");
 		menu(plist);
 	}
 }
-
 int count1(List*plist){
 	int i=0;
 	Node*p;
@@ -435,6 +443,8 @@ void joke(List*plist)
         start(plist);
 }
 
+
+//开始模块
 void start(List*plist)
 {
 	printf("\nYou could choose a number of \"Menu\" , \"Leave\" and \"Root\"\n1.Menu\n2.Leave\n3.Root\nPlease choose your number:");
@@ -447,7 +457,7 @@ void start(List*plist)
 		}
 		else if(c==2)
 		{
-			longjmp(jmp,2);
+			longjmp(jmp,2);//跳转会已经保存的断点
 		}
 		else if(c==3)
 		{
@@ -457,13 +467,14 @@ void start(List*plist)
 		{
 			printf("\n\033[41;33;1;5mSorry,I don't know your meaning.\033[0m\n");
 			printf("Please choose your number again:");
-			fflush(stdin);
+			fflush(stdin);//清除缓冲区
 				scanf("%d",&c);
 
 		}
-	}while(c!=1&&c!=2&&c!=3);
+	}while(c!=1&&c!=2&&c!=3);//不规范输入报错补救
 }
 
+//结束模块
 void end(List*plist)
 {
 	Node*p,*q;
@@ -474,6 +485,7 @@ void end(List*plist)
 	}
 }
 
+//菜单模块
 void menu(List*plist)
 {
 	printf("\n\
@@ -491,7 +503,7 @@ void menu(List*plist)
 	printf("\nPlease tell me the number which you want:");
 	int c;
 	scanf("%d",&c);
-	while(1)
+	while(1)//不规范输入报错补救
 	{
 		switch(c)
 	        {
@@ -505,10 +517,10 @@ void menu(List*plist)
 		  case 8:start(plist);break;
 		  default:{
 				printf("\n\033[41;33;5mSorry,I don't konwn what you mean,please try again:\033[0m");
-				fflush(stdin);
+				fflush(stdin);//清除缓冲区
 			        scanf("%d",&c);
 				break;
 			}
-	        }
+	    }
 	}
 }
